@@ -19,6 +19,7 @@ if uploaded_files is not None:
         image_processor = ImageProcessor(image)
         image_processor.trim()
         image_processor.resize(800, 800)
+        image = image.convert('RGB')
         processed_images.append(image)
 
 if st.button('Download afbeeldingen als zip'):
