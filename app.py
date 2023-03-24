@@ -4,8 +4,8 @@ from PIL import Image
 import zipfile
 import io
 
-# Classes in this project
-from ImageProcessor import ImageProcessor
+# Imports from this project
+import utils
 
 st.title('THEBO Afbeeldingen')
 
@@ -13,13 +13,11 @@ uploaded_files = st.file_uploader('Selecteer afbeeldingen...', type=['jpg', 'jpe
 processed_images = []
 
 if uploaded_files is not None:
-    for uploade_file in uploaded_files:
-        image = Image.open(uploade_file)
-        image.filename = uploade_file.name
-        image_processor = ImageProcessor(image)
-        image_processor.trim()
-        image_processor.resize(800, 800)
-        image = image.convert('RGB')
+    for uploaded_file in uploaded_files:
+        image = utils.open_image(uploaded_file)
+        image = utils.trim(image)
+        image = utils.resize(image, 800, 800)
+        image.filename = uploaded_file.name
         processed_images.append(image)
 
 if st.button('Download afbeeldingen als zip'):
@@ -28,7 +26,7 @@ if st.button('Download afbeeldingen als zip'):
         for processed_image in processed_images:
             image_name = processed_image.filename
             image_bytes = io.BytesIO()
-            image.save(image_bytes, format='JPEG')
+            processed_image.save(image_bytes, format='PNG')
             z.writestr(image_name, image_bytes.getvalue())
     zip_file.seek(0)
     st.download_button('Download', data=zip_file.getvalue(), file_name='gecorrigeerde_afbeeldingen.zip', mime='application/zip')
