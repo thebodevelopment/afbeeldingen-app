@@ -26,7 +26,7 @@ def resize(image, width, height):
     else:
         resize_width = round(ratio_height * image.width)
         resize_height = height
-    image_resize = image.resize((resize_width, resize_height), PIL.Image.ANTIALIAS)
+    image_resize = image.resize((resize_width, resize_height), PIL.Image.LANCZOS)
     background = PIL.Image.new('RGBA', (width, height), (255, 255, 255, 255))
     offset = (round((width - resize_width) / 2), round((height - resize_height) / 2))
     background.paste(image_resize, offset)
